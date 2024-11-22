@@ -13,22 +13,6 @@ struct Process
     int is_completed;
 };
 
-void sortByArrivalTime(struct Process *processes, int n)
-{
-    for (int i = 0; i < n - 1; i++)
-    {
-        for (int j = i + 1; j < n; j++)
-        {
-            if (processes[i].arr_time > processes[j].arr_time)
-            {
-                struct Process temp = processes[i];
-                processes[i] = processes[j];
-                processes[j] = temp;
-            }
-        }
-    }
-}
-
 void roundRobinScheduling(struct Process *processes, int n, int quantum)
 {
     int curr_time = 0;
@@ -39,7 +23,7 @@ void roundRobinScheduling(struct Process *processes, int n, int quantum)
         int flag = 0;
         for (int i = 0; i < n; i++)
         {
-            if (processes[i].rem_time > 0 && processes[i].arr_time <= curr_time)
+            if (processes[i].rem_time > 0)
             {
                 flag = 1;
                 if (processes[i].rem_time > quantum)
@@ -79,8 +63,7 @@ int main()
     for (int i = 0; i < n; i++)
     {
         processes[i].pId = i + 1;
-        printf("Enter arrival time for Process %d: ", i + 1);
-        scanf("%d", &(processes[i].arr_time));
+        processes[i].arr_time = 0; // All processes arrive at time 0
         printf("Enter burst time for Process %d: ", i + 1);
         scanf("%d", &(processes[i].burst_time));
         processes[i].burst_time_copy = processes[i].burst_time;
@@ -88,7 +71,6 @@ int main()
         processes[i].is_completed = 0;
     }
 
-    sortByArrivalTime(processes, n);
     roundRobinScheduling(processes, n, quantum);
 
     for (int i = 0; i < n; i++)
@@ -104,6 +86,6 @@ int main()
 
     printf("Avg TAT: %.2f\n", avg_tat);
     printf("Avg Wait Time: %.2f\n", avg_wait);
-    
+
     return 0;
 }

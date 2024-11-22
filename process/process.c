@@ -13,7 +13,7 @@ void process()
     if (pid < 0)
     {
         // Fork failed
-        perror("Child process failed\n");
+        printf("Child process failed\n");
         exit(1);
     }
     else if (pid == 0)
